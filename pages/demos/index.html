@@ -203,6 +203,38 @@
           <code>:focus-visible</code> outline.</li>
         <li><strong>Proper contrast.</strong> All essential text meets WCAG AA contrast ratios.</li>
       </ul>
+
+      <h3>Progressive enhancement: works without JavaScript</h3>
+      <p>
+        Pretext is a JavaScript library, so it would be easy to assume these demos are
+        useless without JS. We made sure that's not the case. Every demo follows a
+        progressive enhancement strategy where <strong>content is accessible even when
+        JavaScript is unavailable</strong> — in text browsers like Lynx, in restrictive
+        corporate environments, in search engine crawlers, and in browser reader modes.
+      </p>
+      <ul>
+        <li><strong>Content-first defaults.</strong> Pages default to showing readable content.
+          Visual stages are hidden until JavaScript adds the appropriate view class, not the
+          other way around. Without JS, you get the article — not a blank page.</li>
+        <li><strong>Pre-populated HTML.</strong> Where possible, content lives directly in the
+          HTML source (accordion section titles and body text, chat messages in bubbles) rather
+          than being injected by JavaScript. Crawlers, reader modes, and text browsers see
+          real content immediately.</li>
+        <li><strong>Graceful degradation for interactive controls.</strong> The accordion
+          defaults to all sections expanded when JS can't run the collapse logic. Sliders and
+          view toggles are inert without JS, but the content they control is already visible.</li>
+        <li><strong><code>&lt;noscript&gt;</code> fallbacks.</strong> Every demo that depends
+          on JavaScript for rendering includes a <code>&lt;noscript&gt;</code> message
+          explaining what the demo does and, where applicable, linking to original source
+          material.</li>
+      </ul>
+      <p>
+        This matters because accessibility is not only about screen readers. It's about
+        ensuring content reaches people regardless of how they access the web — whether
+        that's a full browser, a text terminal, a translation service, or a search engine
+        indexing the page.
+      </p>
+
       <p>
         Each demo page includes a detailed "Accessibility in this demo" section explaining
         exactly what was done and why. The goal is not just technical compliance — it's

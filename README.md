@@ -169,6 +169,17 @@ Every demo follows a **dual-layer pattern**:
 - **"Accessibility in this demo"** explanation section on every demo page
 - **Accessibility overview** on the demos index page
 
+### Progressive enhancement: works without JavaScript
+
+Pretext is a JavaScript library, so it would be easy to assume these demos are useless without JS. We made sure that's not the case. Every demo follows a progressive enhancement strategy where content is accessible even when JavaScript is unavailable:
+
+- **Content-first defaults.** Pages default to showing readable content. Visual stages are hidden until JavaScript adds the appropriate view class. Without JS, you get the article — not a blank page.
+- **Pre-populated HTML.** Where possible, content lives directly in the HTML source (accordion section titles and body text, chat messages in bubbles) rather than being injected by JavaScript. Crawlers, reader modes, and text browsers see real content immediately.
+- **Graceful degradation.** The accordion defaults to all sections expanded when JS can't run the collapse logic. Sliders and view toggles are inert without JS, but the content they control is already visible.
+- **`<noscript>` fallbacks.** Every demo that depends on JavaScript for rendering includes a `<noscript>` message explaining what the demo does and, where applicable, linking to original source material.
+
+This matters because accessibility extends beyond screen readers. Content should reach people regardless of how they access the web — whether that's a full browser, a text terminal like Lynx, a translation service, a browser reader mode, or a search engine indexing the page.
+
 ### The principle
 
 Pretext's core job is DOM-free text measurement. Accessibility depends on how you expose content and interaction around it. The semantic DOM is the source of truth for reading; the visual engine is a progressive enhancement on top. This fork demonstrates that pattern across every layout archetype: editorial, chat, accordion, masonry, rich text, and generative art.

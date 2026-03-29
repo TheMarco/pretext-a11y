@@ -293,6 +293,13 @@
       buttons, providing keyboard equivalence to the drag interaction. Users who prefer
       reduced motion start in Article view with all orbs paused.
     </p>
+    <p>
+      The page also works without JavaScript. The visual stage is hidden by default and only
+      enabled when JS adds the view-mode class. Without JS, the article reading pane is
+      visible immediately. A <code>&lt;noscript&gt;</code> fallback provides the article
+      title and an explanation, ensuring text browsers, crawlers, and reader modes always
+      find meaningful content.
+    </p>
   </section>
 
   <div class="hint" aria-hidden="true">Drag the orbs &middot; Click to pause &middot; Zero DOM reads</div>

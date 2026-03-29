@@ -93,6 +93,14 @@
       the reading order follows the natural card sequence. A screen-reader-only heading
       provides page context.
     </p>
+    <p>
+      A screen-reader-only <code>&lt;ul&gt;</code> list contains all card texts in reading
+      order, separate from the visually-positioned cards. The visual card container is
+      marked <code>aria-hidden</code> so assistive technologies read the clean semantic
+      list instead. Without JavaScript, a <code>&lt;noscript&gt;</code> message explains
+      that the demo requires JS to render, ensuring text browsers and crawlers see a
+      meaningful page rather than empty markup.
+    </p>
   </section>
 
   <script type="module" src="./index.ts"></script>
