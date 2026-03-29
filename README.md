@@ -178,7 +178,7 @@ Pretext is a JavaScript library, so it would be easy to assume these demos are u
 - **Graceful degradation.** The accordion defaults to all sections expanded when JS can't run the collapse logic. Sliders and view toggles are inert without JS, but the content they control is already visible.
 - **`<noscript>` fallbacks.** Every demo includes a `<noscript>` element providing context or content appropriate to the demo type.
 
-This matters for both accessibility and discoverability. Text browsers like Lynx render the full content. Search engine crawlers index real text instead of empty markup. Browser reader modes extract the article. Translation services have text to work with. The original demos, by contrast, render all content via JavaScript into positioned fragments — without JS, crawlers and text browsers see essentially nothing.
+**Why this matters for SEO and discoverability:** without these enhancements, none of the demo content would be indexed by search engines. The original demos render all text via JavaScript into absolutely-positioned fragments — search engine crawlers, AI systems, and social media link previews see empty markup. No headings, no paragraphs, no content. The pages are effectively invisible to the non-JavaScript web. With pre-populated HTML, all content is immediately available to Google, Bing, DuckDuckGo, AI crawlers (ChatGPT, Perplexity, Claude), RSS readers, browser reader modes, translation services, and social media Open Graph scrapers. Accessibility and SEO are not separate concerns — they are the same principle: content should exist as semantic HTML first, with visual enhancement layered on top.
 
 ### The principle
 
