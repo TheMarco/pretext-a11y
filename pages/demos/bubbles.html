@@ -158,7 +158,7 @@
   }
   .msg.sent {
     align-self: flex-end;
-    background: #0b84fe;
+    background: #0b6fdb;
     color: white;
     border-bottom-right-radius: 4px;
   }
@@ -304,7 +304,9 @@
         <code>role="article"</code> and labeled "Sent" or "Received" so assistive technologies
         can identify the speaker. A screen-reader-only text prefix provides this context during
         continuous reading. The chat containers use <code>role="log"</code> with distinct labels.
-        The width slider has a proper <code>&lt;label&gt;</code> element.
+        The width slider has a proper <code>&lt;label&gt;</code> element. The sent-message
+        blue was darkened from the original iMessage blue to meet WCAG AA contrast (4.5:1)
+        for white text on a colored background.
       </p>
     </section>
 
