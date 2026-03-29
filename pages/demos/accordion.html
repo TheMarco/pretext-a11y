@@ -126,10 +126,13 @@
       }
 
       .accordion-body {
-        height: 0;
         overflow: clip;
         transition: height 180ms ease;
       }
+
+      /* Without JS, show all sections expanded */
+      .accordion-body { height: auto; }
+      .js-accordion .accordion-body { height: 0; }
 
       .accordion-inner {
         padding: 0 20px 18px;

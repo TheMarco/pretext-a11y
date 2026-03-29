@@ -156,6 +156,7 @@ function scheduleRender(): void {
 
 function boot(): void {
   const list = getRequiredElement('list')
+  list.classList.add('js-accordion')
   domCache = {
     list,
     items: getAccordionItemNodes(list),
