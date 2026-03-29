@@ -834,6 +834,9 @@ document.addEventListener('click', event => {
   scheduleRender()
 })
 
+// Enable visual mode now that JS is running
+document.body.classList.add('view-visual')
+
 mountStaticNodes()
 commitFrame(performance.now())
 

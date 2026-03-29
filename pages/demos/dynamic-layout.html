@@ -214,7 +214,9 @@
         padding: 0; margin: -1px; overflow: hidden;
         clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
       }
-      .view-article .page { display: none; }
+      /* Hide the visual stage when there's no JS (no view class) or in article mode */
+      .page { display: none; }
+      .view-visual .page { display: block; }
 
       #article-content h1 {
         font: 700 28px/1.15 "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
@@ -260,7 +262,7 @@
       }
     </style>
   </head>
-  <body class="view-visual">
+  <body>
     <a class="skip-link" href="#article-content">Skip to article</a>
 
     <header class="demo-header">
@@ -283,7 +285,9 @@
         <h1 id="article-title">Situational Awareness: The Decade Ahead</h1>
         <p class="article-credit">Leopold Aschenbrenner, June 2024</p>
         <div id="article-body">
-          <!-- Filled by JS from dynamic-layout-text.ts -->
+          <noscript>
+            <p>This article excerpt is from Leopold Aschenbrenner's "Situational Awareness: The Decade Ahead" (June 2024). Enable JavaScript to see the full text with paragraph breaks, or read the <a href="https://situational-awareness.ai/">original essay</a>.</p>
+          </noscript>
         </div>
       </article>
 

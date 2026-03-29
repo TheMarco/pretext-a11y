@@ -79,9 +79,10 @@
     /* ── Visual stage (existing styles) ── */
     #stage {
       position: relative; width: 100vw; overflow: hidden;
+      display: none; /* Hidden by default; JS enables via view class */
     }
-    .view-visual #stage { height: 100vh; }
-    .view-split #stage { height: 100vh; }
+    .view-visual #stage { display: block; height: 100vh; }
+    .view-split #stage { display: block; height: 100vh; }
     .view-article #stage { display: none; }
 
     .line {
@@ -242,7 +243,7 @@
     }
   </style>
 </head>
-<body class="view-visual">
+<body>
   <a class="skip-link" href="#article-content">Skip to article</a>
 
   <header class="demo-header" role="banner">
