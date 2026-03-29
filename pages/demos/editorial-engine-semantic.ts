@@ -6,6 +6,7 @@ import {
 } from './editorial-engine-content.ts'
 
 export function renderArticle(mount: HTMLElement): void {
+  mount.textContent = '' // Clear pre-populated HTML fallback
   const h1 = document.createElement('h2')
   h1.textContent = HEADLINE_TEXT
   h1.id = 'article-headline'
