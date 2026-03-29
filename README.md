@@ -138,6 +138,41 @@ Pretext doesn't try to be a full font rendering engine (yet?). It currently targ
 - `system-ui` is unsafe for `layout()` accuracy on macOS. Use a named font.
 - Because the default target includes `overflow-wrap: break-word`, very narrow widths can still break inside words, but only at grapheme boundaries.
 
+## Accessibility
+
+This fork adds comprehensive accessibility enhancements to every demo page, proving that ambitious visual layouts and genuine accessibility can coexist.
+
+### Architecture
+
+Every demo follows a **dual-layer pattern**:
+
+- **Semantic layer** — all meaningful content exists as proper HTML (headings, paragraphs, blockquotes, lists), readable by screen readers, find-in-page, browser translation, and reader mode.
+- **Visual layer** — the Pretext-powered positioned layout is marked `aria-hidden="true"`, so assistive technologies skip it entirely and read the semantic content instead.
+
+### What was done
+
+| Demo | Enhancements |
+|------|-------------|
+| **Editorial Engine** | Full semantic article, three view modes (Visual/Article/Split), native orb controls via sliders and buttons, `prefers-reduced-motion` support, skip link, landmarks, live region announcements |
+| **Dynamic Layout** | Semantic article with full body copy, view toggle, visual stage hidden from AT, scroll fix for article mode |
+| **Accordion** | `aria-controls` linking buttons to panels, `role="region"` with `aria-labelledby`, `aria-hidden` on collapsed panels, `:focus-visible` outlines |
+| **Bubbles** | Speaker identification (Sent/Received labels), `role="log"` on chat containers, proper `<label>` on slider, sr-only text prefixes |
+| **Rich Note** | Semantic note text for screen readers, positioned fragments hidden from AT, proper slider label |
+| **Masonry** | Full HTML document structure, sr-only heading, semantic `<ul>` with all card texts, visual container hidden from AT |
+| **Variable Typographic ASCII** | `role="img"` with descriptive labels on art panels, contrast fixes, reduced-motion CSS |
+
+### Across all demos
+
+- **`:focus-visible`** outlines on every interactive element
+- **WCAG AA contrast** on all essential text
+- **`prefers-reduced-motion`** respected where animation exists
+- **"Accessibility in this demo"** explanation section on every demo page
+- **Accessibility overview** on the demos index page
+
+### The principle
+
+Pretext's core job is DOM-free text measurement. Accessibility depends on how you expose content and interaction around it. The semantic DOM is the source of truth for reading; the visual engine is a progressive enhancement on top. This fork demonstrates that pattern across every layout archetype: editorial, chat, accordion, masonry, rich text, and generative art.
+
 ## Develop
 
 See [DEVELOPMENT.md](DEVELOPMENT.md) for the dev setup and commands.
@@ -145,3 +180,5 @@ See [DEVELOPMENT.md](DEVELOPMENT.md) for the dev setup and commands.
 ## Credits
 
 Sebastian Markbage first planted the seed with [text-layout](https://github.com/chenglou/text-layout) last decade. His design — canvas `measureText` for shaping, bidi from pdf.js, streaming line breaking — informed the architecture we kept pushing forward here.
+
+All accessibility enhancements by [Marco van Hylckama Vlieg](https://ai-created.com) — [@AIandDesign](https://x.com/AIandDesign)
