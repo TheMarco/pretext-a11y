@@ -76,6 +76,7 @@
       }
 
       .hint-pill {
+        display: none; /* Hidden by default; shown only in visual mode */
         position: fixed;
         top: 16px;
         left: 50%;
@@ -94,6 +95,9 @@
         box-shadow: 0 14px 32px rgba(17, 16, 13, 0.16);
       }
 
+      .view-visual .hint-pill {
+        display: block;
+      }
       .page--mobile .hint-pill {
         display: none;
       }
