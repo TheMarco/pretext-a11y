@@ -115,8 +115,14 @@ function initializeStaticContent(): void {
   for (let index = 0; index < items.length; index++) {
     const item = items[index]!
     const itemDom = domCache.items[index]!
+    const panelId = `panel-${item.id}`
     itemDom.root.dataset['id'] = item.id
     itemDom.toggle.dataset['id'] = item.id
+    itemDom.toggle.setAttribute('aria-controls', panelId)
+    itemDom.body.id = panelId
+    itemDom.body.setAttribute('role', 'region')
+    itemDom.body.setAttribute('aria-labelledby', `title-${item.id}`)
+    itemDom.title.id = `title-${item.id}`
     itemDom.title.textContent = item.title
     itemDom.copy.textContent = item.text
   }
@@ -219,6 +225,7 @@ function render(_now: number): boolean {
 
     itemDom.meta.textContent = panelMeta[index]!
     itemDom.body.style.height = expanded ? `${panelHeights[index]}px` : '0px'
+    if (expanded) { itemDom.body.removeAttribute('aria-hidden') } else { itemDom.body.setAttribute('aria-hidden', 'true') }
     itemDom.glyph.style.transform = expanded ? 'rotate(90deg)' : 'rotate(0deg)'
     itemDom.toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false')
   }

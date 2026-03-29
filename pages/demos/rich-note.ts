@@ -422,3 +422,14 @@ function render(): void {
 
   renderBody(lines)
 }
+
+// ── Semantic note text for screen readers ──
+const semanticNote = document.getElementById('note-semantic')
+if (semanticNote) {
+  let text = ''
+  for (const spec of INLINE_SPECS) {
+    if (spec.kind === 'text') text += spec.text
+    else if (spec.kind === 'chip') text += spec.label
+  }
+  semanticNote.textContent = text
+}

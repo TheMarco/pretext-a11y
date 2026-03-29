@@ -3,34 +3,100 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Editorial pretext demo: animated orbs, live multi-column text flow, and zero DOM measurements.">
+  <meta name="description" content="Accessible editorial layout demo: animated orbs, live multi-column text flow, and zero DOM measurements.">
   <title>Mockup 147 — The Editorial Engine</title>
   <style>
-    * { box-sizing: border-box; margin: 0; }
-    html, body {
-      background: radial-gradient(ellipse at 50% 40%, #0f0f14 0%, #0a0a0c 100%);
-      color: #e8e4dc; height: 100vh; overflow: hidden;
-    }
-    body { font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; }
 
-    #stage { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+    /* ── Base ── */
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+      color: #e8e4dc;
+      background: radial-gradient(ellipse at 50% 40%, #0f0f14 0%, #0a0a0c 100%);
+      min-height: 100vh;
+    }
+
+    /* ── Screen-reader only ── */
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+    }
+
+    /* ── Skip link ── */
+    .skip-link {
+      position: fixed; top: -100px; left: 16px; z-index: 1000;
+      padding: 8px 16px; background: #c4a35a; color: #0a0a0c;
+      font: 700 14px/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif;
+      text-decoration: none; border-radius: 0 0 6px 6px;
+      transition: top 0.15s;
+    }
+    .skip-link:focus {
+      top: 0; outline: 3px solid #fff; outline-offset: 2px;
+    }
+
+    /* ── Focus ── */
+    :focus-visible {
+      outline: 3px solid #c4a35a; outline-offset: 2px;
+    }
+
+    /* ── Demo header ── */
+    .demo-header {
+      position: relative; z-index: 200;
+      padding: 12px 20px;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px;
+      background: rgba(0, 0, 0, 0.6);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .demo-header h1 {
+      font: 700 15px/1.2 "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #e8e4dc; letter-spacing: 0.02em;
+      margin-right: auto;
+    }
+    .demo-header p {
+      font: 400 12px/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: rgba(255, 255, 255, 0.55);
+      flex-basis: 100%;
+    }
+
+    /* ── Control buttons ── */
+    .controls {
+      display: flex; gap: 8px; align-items: center;
+    }
+    .controls button {
+      font: 500 12px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
+      padding: 6px 12px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.06); color: #ccc;
+      cursor: pointer; white-space: nowrap;
+    }
+    .controls button:hover { background: rgba(255,255,255,0.12); }
+    .controls button[aria-pressed="true"] {
+      background: rgba(196, 163, 90, 0.25); border-color: rgba(196, 163, 90, 0.5);
+      color: #e8e4dc;
+    }
+
+    /* ── Visual stage (existing styles) ── */
+    #stage {
+      position: relative; width: 100vw; overflow: hidden;
+    }
+    .view-visual #stage { height: 100vh; }
+    .view-split #stage { height: 100vh; }
+    .view-article #stage { display: none; }
 
     .line {
       position: absolute; white-space: pre; z-index: 1; color: #e8e4dc;
       user-select: text; -webkit-user-select: text;
     }
-
     .headline-line {
       position: absolute; white-space: pre;
       font-weight: 700; color: #fff; letter-spacing: -0.5px; z-index: 2;
       user-select: text; -webkit-user-select: text;
     }
-
     .drop-cap {
       position: absolute; pointer-events: none; z-index: 2;
       font-weight: 700; color: #c4a35a;
     }
-
     .orb {
       position: absolute; border-radius: 50%; pointer-events: none; z-index: 10;
       will-change: transform;
@@ -45,36 +111,189 @@
       user-select: text; -webkit-user-select: text;
     }
 
+    /* ── Semantic article ── */
+    .reader-pane {
+      max-width: 680px; margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+    .view-visual .reader-pane {
+      /* Visually hidden but AT-accessible */
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+    }
+    .view-split .reader-pane {
+      position: fixed; right: 0; top: 0; bottom: 0;
+      width: 38%; max-width: 520px;
+      overflow-y: auto; padding: 60px 28px 80px;
+      background: rgba(10, 10, 12, 0.92);
+      border-left: 1px solid rgba(255, 255, 255, 0.08);
+      z-index: 150;
+    }
+    .view-split #stage { width: 62vw; }
+
+    #article-content .article-headline {
+      font: 700 28px/1.15 "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+      color: #fff; letter-spacing: -0.3px;
+      margin-bottom: 28px;
+    }
+    #article-content p {
+      font: 400 17px/1.7 "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+      color: #d4d0c8; margin-bottom: 20px;
+    }
+    #article-content blockquote {
+      font: italic 18px/1.6 "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+      color: #c4a35a;
+      border-left: 3px solid #6b5a3d;
+      padding: 8px 0 8px 20px;
+      margin: 32px 0;
+    }
+
+    /* ── Orb controls panel ── */
+    #orb-controls {
+      padding: 16px 20px 24px;
+      background: rgba(0, 0, 0, 0.5);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;
+    }
+    .view-visual #orb-controls,
+    .view-article #orb-controls { display: none; }
+
+    #orb-controls fieldset {
+      border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px;
+      padding: 10px 14px;
+    }
+    #orb-controls legend {
+      font: 600 13px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #ccc; padding: 0 6px;
+    }
+    .orb-control-help {
+      font: 400 11px/1.3 "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: rgba(255, 255, 255, 0.4); margin-bottom: 8px;
+    }
+    #orb-controls label {
+      font: 400 11px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: rgba(255, 255, 255, 0.55); display: block; margin-top: 6px;
+    }
+    #orb-controls input[type="range"] {
+      width: 100%; margin: 2px 0 4px; accent-color: #c4a35a;
+    }
+    #orb-controls button {
+      font: 500 11px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
+      padding: 4px 10px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06); color: #aaa;
+      cursor: pointer; margin-right: 6px; margin-top: 6px;
+    }
+    #orb-controls button:hover { background: rgba(255,255,255,0.12); }
+
+    /* ── Hint + credit (visual mode only) ── */
     .hint {
       position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
       font: 400 13px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
-      color: rgba(255,255,255,0.22); z-index: 100;
-      background: rgba(0,0,0,0.45); padding: 8px 18px; border-radius: 999px;
+      color: rgba(255, 255, 255, 0.55); z-index: 100;
+      background: rgba(0, 0, 0, 0.6); padding: 8px 18px; border-radius: 999px;
       pointer-events: none; white-space: nowrap;
     }
+    .view-article .hint { display: none; }
     .credit {
       position: fixed; right: 16px; bottom: 12px; z-index: 100;
-      font: 400 11px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
-      color: rgba(255,255,255,0.28);
+      font: 400 12px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: rgba(255, 255, 255, 0.55);
       text-decoration: none;
     }
-    .credit:hover { color: rgba(255,255,255,0.44); }
+    .credit:hover { color: rgba(255, 255, 255, 0.75); }
 
     @media (max-width: 760px) {
-      .hint {
-        display: none;
+      .hint, .credit { display: none; }
+      .view-split .reader-pane {
+        position: static; width: auto; max-width: none;
+        border-left: none; background: transparent;
       }
+      .view-split #stage { width: 100vw; height: 50vh; }
+    }
 
-      .credit {
-        display: none;
-      }
+    /* ── Accessibility note ── */
+    .a11y-note {
+      max-width: 680px; margin: 0 auto;
+      padding: 32px 24px 48px;
+    }
+    .view-visual .a11y-note {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+    }
+    .a11y-note h2 {
+      font: 600 16px/1.3 "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #ccc; margin-bottom: 12px;
+    }
+    .a11y-note p {
+      font: 400 14px/1.6 "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: rgba(255, 255, 255, 0.45); margin-bottom: 10px;
+    }
+    .a11y-note p:last-child { margin-bottom: 0; }
+    .a11y-note code {
+      font: 12px/1.3 "SF Mono", ui-monospace, monospace;
+      background: rgba(255, 255, 255, 0.06); padding: 2px 5px; border-radius: 3px;
+    }
+
+    /* ── Reduced motion ── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: 0s !important; animation-duration: 0s !important; }
     }
   </style>
 </head>
-<body>
-  <div id="stage"></div>
-  <div class="hint">Drag the orbs &middot; Click to pause &middot; Zero DOM reads</div>
+<body class="view-visual">
+  <a class="skip-link" href="#article-content">Skip to article</a>
+
+  <header class="demo-header" role="banner">
+    <h1>The Editorial Engine</h1>
+    <div class="controls" role="group" aria-label="Demo controls">
+      <div role="group" aria-label="View mode">
+        <button type="button" data-view="visual" aria-pressed="true">Visual</button>
+        <button type="button" data-view="article" aria-pressed="false">Article</button>
+        <button type="button" data-view="split" aria-pressed="false">Split</button>
+      </div>
+      <button type="button" id="toggle-motion" aria-pressed="false">Pause all motion</button>
+    </div>
+    <p>Experimental editorial layout powered by DOM-free text measurement. The article content and controls are fully accessible.</p>
+  </header>
+
+  <main>
+    <section class="reader-pane" aria-labelledby="article-headline">
+      <article id="article-content">
+        <!-- Rendered by editorial-engine-semantic.ts -->
+      </article>
+    </section>
+
+    <div id="stage" aria-hidden="true"></div>
+  </main>
+
+  <aside id="orb-controls" aria-label="Orb layout controls">
+    <!-- Rendered by editorial-engine-controls.ts -->
+  </aside>
+
+  <section class="a11y-note" aria-label="Accessibility notes">
+    <h2>Accessibility in this demo</h2>
+    <p>
+      The visual stage renders text as hundreds of absolutely-positioned line fragments,
+      with animated orbs acting as obstacles that text flows around in real time. This produces
+      a striking editorial layout, but the positioned fragments are not meaningful to assistive
+      technologies.
+    </p>
+    <p>
+      To make this accessible, the full article exists as semantic HTML (headings, paragraphs,
+      blockquotes) in a separate reading layer. The visual stage is hidden from screen readers
+      using <code>aria-hidden</code>. Three view modes (Visual, Article, Split) let users
+      choose their experience. Orb positions are controllable via native range sliders and
+      buttons, providing keyboard equivalence to the drag interaction. Users who prefer
+      reduced motion start in Article view with all orbs paused.
+    </p>
+  </section>
+
+  <div class="hint" aria-hidden="true">Drag the orbs &middot; Click to pause &middot; Zero DOM reads</div>
   <a class="credit" href="https://x.com/somnai_dreams" target="_blank" rel="noreferrer">Made by @somnai_dreams</a>
+
+  <div id="sr-status" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
   <script type="module" src="./editorial-engine.ts"></script>
 </body>

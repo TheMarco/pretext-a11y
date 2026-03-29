@@ -44,13 +44,35 @@ type DomCache = {
   cards: Array<HTMLDivElement | undefined> // cache lifetime: on visibility changes
 }
 
-const domCache: DomCache = {
-  container: document.createElement('div'),
-  cards: [],
+const masonryRoot = document.getElementById('masonry-root')
+const container = document.createElement('div')
+container.style.position = 'relative'
+container.setAttribute('aria-hidden', 'true')
+if (masonryRoot) {
+  masonryRoot.insertBefore(container, masonryRoot.firstChild)
+} else {
+  document.body.appendChild(container)
 }
 
-domCache.container.style.position = 'relative'
-document.body.appendChild(domCache.container)
+// Semantic list for AT: all card texts in reading order
+const semanticList = document.createElement('ul')
+semanticList.className = 'sr-only'
+semanticList.setAttribute('role', 'list')
+for (const card of st.cards) {
+  const li = document.createElement('li')
+  li.textContent = card.text
+  semanticList.appendChild(li)
+}
+if (masonryRoot) {
+  masonryRoot.insertBefore(semanticList, masonryRoot.firstChild)
+} else {
+  document.body.appendChild(semanticList)
+}
+
+const domCache: DomCache = {
+  container,
+  cards: [],
+}
 
 function computeLayout(windowWidth: number): LayoutState {
   let colCount: number

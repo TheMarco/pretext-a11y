@@ -145,6 +145,36 @@
     .chip--priority { background: rgba(176, 44, 44, 0.1); color: #8e2323; border-color: rgba(176, 44, 44, 0.14); }
     .chip--time { background: rgba(70, 118, 77, 0.11); color: #355f38; border-color: rgba(70, 118, 77, 0.14); }
     .chip--count { background: rgba(67, 57, 122, 0.1); color: #483e83; border-color: rgba(67, 57, 122, 0.13); }
+    /* ── Focus ── */
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+    /* ── Screen-reader only ── */
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+    }
+
+    /* ── Accessibility note ── */
+    .a11y-note {
+      width: min(720px, 100%); margin: 32px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid var(--rule);
+    }
+    .a11y-note h2 {
+      font: 600 16px/1.3 "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: var(--ink); margin-bottom: 12px;
+    }
+    .a11y-note p {
+      font: 400 14px/1.6 "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: var(--muted); margin-bottom: 10px;
+    }
+    .a11y-note p:last-child { margin-bottom: 0; }
+    .a11y-note code {
+      font: 12px/1.3 "SF Mono", ui-monospace, monospace;
+      background: rgba(0, 0, 0, 0.06); padding: 2px 5px; border-radius: 3px;
+    }
+
     @media (max-width: 900px) {
       .preview {
         justify-content: center;
@@ -184,15 +214,33 @@
     </section>
 
     <div class="toolbar">
-      <div class="toolbar-label">Text Width</div>
+      <label class="toolbar-label" for="width-slider">Text Width</label>
       <input id="width-slider" type="range" min="260" max="760" value="516">
       <span class="toolbar-value" id="width-value">516px</span>
     </div>
 
     <section class="preview">
       <article class="note-shell" id="note-shell">
-        <div class="note-body" id="note-body"></div>
+        <p class="sr-only" id="note-semantic">
+          <!-- Semantic text version filled by JS -->
+        </p>
+        <div class="note-body" id="note-body" aria-hidden="true"></div>
       </article>
+    </section>
+
+    <section class="a11y-note">
+      <h2>Accessibility in this demo</h2>
+      <p>
+        The note above renders each text run, code span, link, and chip as an individually
+        positioned fragment using Pretext's line-breaking engine. This produces pixel-perfect
+        wrapping where atomic chips never break mid-word.
+      </p>
+      <p>
+        A screen-reader-accessible version of the full note text is provided alongside the
+        visual fragments. The positioned layout is marked <code>aria-hidden</code> so
+        assistive technologies read the semantic text instead of hundreds of individual
+        fragments. The width slider has a proper <code>&lt;label&gt;</code> element.
+      </p>
     </section>
   </main>
   <script type="module" src="./rich-note.ts"></script>

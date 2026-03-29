@@ -1,15 +1,29 @@
 <!DOCTYPE html>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-
-<body>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Masonry layout demo: cards positioned with Pretext's DOM-free text measurement for exact heights.">
+  <title>Masonry Layout</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       background: #f0f0f0;
       overflow-y: scroll;
+      color: #333;
     }
+
+    /* ── Focus ── */
+    :focus-visible { outline: 3px solid #955f3b; outline-offset: 2px; }
+
+    /* ── Screen-reader only ── */
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+    }
+
     .card {
       position: absolute;
       background: white;
@@ -21,6 +35,50 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.08);
       overflow: hidden;
     }
+
+    /* ── Accessibility note ── */
+    .a11y-note {
+      max-width: 640px; margin: 32px auto;
+      padding: 24px;
+      background: white; border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .a11y-note h2 {
+      font: 600 16px/1.3 "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #333; margin-bottom: 12px;
+    }
+    .a11y-note p {
+      font: 400 14px/1.6 "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #666; margin-bottom: 10px;
+    }
+    .a11y-note p:last-child { margin-bottom: 0; }
+    .a11y-note code {
+      font: 12px/1.3 "SF Mono", ui-monospace, monospace;
+      background: rgba(0, 0, 0, 0.06); padding: 2px 5px; border-radius: 3px;
+    }
   </style>
+</head>
+<body>
+  <h1 class="sr-only">Masonry Layout</h1>
+  <main id="masonry-root" aria-label="Masonry grid of shower thoughts">
+    <!-- Visual cards created by JS, semantic list below -->
+  </main>
+
+  <section class="a11y-note" aria-label="Accessibility notes">
+    <h2>Accessibility in this demo</h2>
+    <p>
+      This masonry grid uses Pretext to compute exact card heights without DOM measurement,
+      enabling perfect positioning with zero layout reflow. Cards are virtualized: only
+      visible cards exist in the DOM.
+    </p>
+    <p>
+      Every card's text content is real DOM text, fully accessible to screen readers,
+      find-in-page, and browser translation. The absolute positioning is purely visual;
+      the reading order follows the natural card sequence. A screen-reader-only heading
+      provides page context.
+    </p>
+  </section>
+
   <script type="module" src="./index.ts"></script>
 </body>
+</html>

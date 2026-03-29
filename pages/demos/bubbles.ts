@@ -76,7 +76,13 @@ function getChatMessageNodes(chat: HTMLDivElement): HTMLDivElement[] {
 }
 
 function readNodeText(node: HTMLDivElement): string {
-  return node.textContent ?? ''
+  // Skip the sr-only speaker label span, read only the visible text nodes
+  let text = ''
+  for (const child of node.childNodes) {
+    if (child instanceof HTMLElement && child.classList.contains('sr-only')) continue
+    text += child.textContent ?? ''
+  }
+  return text
 }
 
 function scheduleRender(): void {

@@ -21,15 +21,23 @@
       body {
         margin: 0;
         min-height: 100%;
-        height: 100%;
         background: var(--paper);
         color: var(--ink);
         overscroll-behavior: none;
       }
 
+      body.view-visual html,
+      html:has(body.view-visual),
+      body.view-visual {
+        height: 100%;
+      }
+
       body {
         font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
         cursor: default;
+      }
+
+      body.view-visual {
         overflow: hidden;
       }
 
@@ -161,21 +169,140 @@
         color: var(--accent);
       }
 
+      /* ── Skip link ── */
+      .skip-link {
+        position: fixed; top: -100px; left: 16px; z-index: 1000;
+        padding: 8px 16px; background: var(--accent); color: #fff;
+        font: 700 14px/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif;
+        text-decoration: none; border-radius: 0 0 6px 6px;
+      }
+      .skip-link:focus { top: 0; outline: 3px solid #fff; outline-offset: 2px; }
+
+      /* ── Focus ── */
+      :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+      /* ── Demo header ── */
+      .demo-header {
+        position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+        display: flex; align-items: center; gap: 12px;
+        padding: 8px 16px;
+        background: rgba(246, 240, 230, 0.92);
+        border-bottom: 1px solid rgba(17, 16, 13, 0.08);
+        backdrop-filter: blur(8px);
+      }
+      .demo-title {
+        font: 600 13px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
+        color: var(--ink); margin-right: auto;
+      }
+      .demo-controls button {
+        font: 500 12px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
+        padding: 5px 12px; border-radius: 4px; border: 1px solid rgba(17,16,13,0.12);
+        background: transparent; color: var(--muted); cursor: pointer;
+      }
+      .demo-controls button:hover { background: rgba(17,16,13,0.04); }
+      .demo-controls button[aria-pressed="true"] {
+        background: rgba(217, 119, 87, 0.15); border-color: rgba(217, 119, 87, 0.3); color: var(--ink);
+      }
+
+      /* ── Semantic article ── */
+      .reader-pane {
+        max-width: 680px; margin: 0 auto;
+        padding: 60px 24px 80px;
+      }
+      .view-visual .reader-pane {
+        position: absolute; width: 1px; height: 1px;
+        padding: 0; margin: -1px; overflow: hidden;
+        clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+      }
+      .view-article .page { display: none; }
+
+      #article-content h1 {
+        font: 700 28px/1.15 "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+        color: var(--ink); margin-bottom: 8px;
+      }
+      .article-credit {
+        font: 400 14px/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif;
+        color: var(--muted); margin-bottom: 28px;
+      }
+      #article-body p {
+        font: 400 17px/1.7 "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+        color: var(--ink); margin-bottom: 18px;
+      }
+
+      /* ── Accessibility note ── */
+      .a11y-note {
+        margin-top: 48px; padding-top: 24px;
+        border-top: 1px solid rgba(17, 16, 13, 0.1);
+      }
+      .a11y-note h2 {
+        font: 600 16px/1.3 "Helvetica Neue", Helvetica, Arial, sans-serif;
+        color: var(--ink); margin-bottom: 12px;
+      }
+      .a11y-note p {
+        font: 400 14px/1.6 "Helvetica Neue", Helvetica, Arial, sans-serif;
+        color: var(--muted); margin-bottom: 12px;
+      }
+      .a11y-note code {
+        font: 12px/1.3 "SF Mono", ui-monospace, monospace;
+        background: rgba(17, 16, 13, 0.06); padding: 2px 5px; border-radius: 3px;
+      }
+
       @media (max-width: 760px) {
         .credit {
           font-size: 11px;
           letter-spacing: 0.12em;
         }
+        .demo-header { padding: 6px 12px; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { transition-duration: 0s !important; animation-duration: 0s !important; }
       }
     </style>
   </head>
-  <body>
+  <body class="view-visual">
+    <a class="skip-link" href="#article-content">Skip to article</a>
+
+    <header class="demo-header">
+      <span class="demo-title">Dynamic Layout</span>
+      <div class="demo-controls" role="group" aria-label="Demo controls">
+        <button type="button" data-view="visual" aria-pressed="true">Visual</button>
+        <button type="button" data-view="article" aria-pressed="false">Article</button>
+      </div>
+    </header>
+
     <main class="page">
-      <div class="atmosphere atmosphere--left"></div>
-      <div class="atmosphere atmosphere--right"></div>
-      <p class="hint-pill">Everything laid out in JS. Resize horizontally and vertically, then click the logos.</p>
-      <div id="stage" class="stage"></div>
+      <div class="atmosphere atmosphere--left" aria-hidden="true"></div>
+      <div class="atmosphere atmosphere--right" aria-hidden="true"></div>
+      <p class="hint-pill" aria-hidden="true">Everything laid out in JS. Resize horizontally and vertically, then click the logos.</p>
+      <div id="stage" class="stage" aria-hidden="true"></div>
     </main>
+
+    <section class="reader-pane" aria-labelledby="article-title">
+      <article id="article-content">
+        <h1 id="article-title">Situational Awareness: The Decade Ahead</h1>
+        <p class="article-credit">Leopold Aschenbrenner, June 2024</p>
+        <div id="article-body">
+          <!-- Filled by JS from dynamic-layout-text.ts -->
+        </div>
+      </article>
+
+      <section class="a11y-note" aria-label="Accessibility notes">
+        <h2>Accessibility in this demo</h2>
+        <p>
+          The visual layout uses Pretext's DOM-free text measurement to flow a long-form article
+          across two columns with obstacle-aware reflow around rotating logos. All text positioning
+          is computed in JavaScript and rendered as absolutely-positioned elements.
+        </p>
+        <p>
+          To make this content accessible, the full article text also exists as semantic HTML in this
+          reading view. The visual stage is hidden from assistive technologies using
+          <code>aria-hidden</code>. Screen readers, find-in-page, browser reader mode, and zoom all
+          work against the semantic article, not the visual fragments. A view toggle lets sighted
+          users switch between the visual demo and the readable article.
+        </p>
+      </section>
+    </section>
 
     <script type="module" src="./dynamic-layout.ts"></script>
   </body>

@@ -53,10 +53,38 @@
     .credit {
       position: fixed; bottom: 12px; right: 16px; z-index: 20;
       font: 400 11px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
-      color: rgba(255,255,255,0.28);
+      color: rgba(255,255,255,0.55);
       text-decoration: none;
     }
-    .credit:hover { color: rgba(255,255,255,0.44); }
+    .credit:hover { color: rgba(255,255,255,0.75); }
+
+    /* ── Focus ── */
+    :focus-visible { outline: 3px solid rgba(196,163,90,0.7); outline-offset: 2px; }
+
+    /* ── Accessibility note ── */
+    .a11y-note {
+      max-width: 720px; margin: 32px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      text-align: left;
+    }
+    .a11y-note h2 {
+      font: 600 16px/1.3 "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: rgba(255,255,255,0.7); margin-bottom: 12px;
+    }
+    .a11y-note p {
+      font: 400 14px/1.6 "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: rgba(255,255,255,0.4); margin-bottom: 10px;
+    }
+    .a11y-note p:last-child { margin-bottom: 0; }
+    .a11y-note code {
+      font: 12px/1.3 "SF Mono", ui-monospace, monospace;
+      background: rgba(255, 255, 255, 0.06); padding: 2px 5px; border-radius: 3px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: 0s !important; animation-duration: 0s !important; }
+    }
   </style>
 </head>
 <body>
@@ -65,20 +93,36 @@
     Proportional font (Georgia) rendered at 3 font-weights × normal/italic — each variant measured by pretext for precise width.
     A shared particle-and-attractor brightness field drives all three panels, then characters are chosen by brightness AND width to preserve the shape in proportional type.
   </p>
-  <div class="comparison">
+  <main class="comparison" role="group" aria-label="ASCII art comparison panels">
     <div class="panel">
-      <div class="panel-label">Source Field</div>
-      <div class="art-box" id="source-box"></div>
+      <div class="panel-label" id="label-source">Source Field</div>
+      <div class="art-box" id="source-box" role="img" aria-labelledby="label-source" aria-description="Animated particle field rendered on canvas, used as the brightness source for the ASCII art panels."></div>
     </div>
     <div class="panel">
-      <div class="panel-label">Proportional × 3 Weights × Italic</div>
-      <div class="art-box" id="prop-box"></div>
+      <div class="panel-label" id="label-prop">Proportional × 3 Weights × Italic</div>
+      <div class="art-box" id="prop-box" role="img" aria-labelledby="label-prop" aria-description="Animated ASCII art using proportional Georgia font at three weights and italic, with characters chosen by brightness and width-matched using Pretext."></div>
     </div>
     <div class="panel">
-      <div class="panel-label">Monospace × Single Weight</div>
-      <div class="art-box" id="mono-box"></div>
+      <div class="panel-label" id="label-mono">Monospace × Single Weight</div>
+      <div class="art-box" id="mono-box" role="img" aria-labelledby="label-mono" aria-description="Animated ASCII art using monospace Courier font at a single weight for comparison with the proportional version."></div>
     </div>
-  </div>
+  </main>
+
+  <section class="a11y-note" aria-label="Accessibility notes">
+    <h2>Accessibility in this demo</h2>
+    <p>
+      This demo generates animated ASCII art from a particle brightness field, using Pretext
+      to measure proportional character widths so the art maintains its shape even in
+      variable-width fonts. The three panels compare source field, proportional, and monospace rendering.
+    </p>
+    <p>
+      Because the content is generative visual art with no textual meaning, each panel is
+      marked with <code>role="img"</code> and descriptive labels explaining what is being
+      shown. The heading and subtitle provide full context about the technique. Reduced-motion
+      preferences are respected by disabling CSS transitions.
+    </p>
+  </section>
+
   <a class="credit" href="https://x.com/somnai_dreams" target="_blank" rel="noreferrer">Made by @somnai_dreams</a>
 
   <script type="module" src="./variable-typographic-ascii.ts"></script>

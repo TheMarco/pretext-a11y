@@ -836,3 +836,30 @@ document.addEventListener('click', event => {
 
 mountStaticNodes()
 commitFrame(performance.now())
+
+// ── Semantic article layer ──
+const articleBody = document.getElementById('article-body')
+if (articleBody) {
+  const paragraphs = BODY_COPY.split(/\n\n+/)
+  for (const text of paragraphs) {
+    const trimmed = text.trim()
+    if (trimmed.length === 0) continue
+    const p = document.createElement('p')
+    p.textContent = trimmed
+    articleBody.appendChild(p)
+  }
+}
+
+// ── View toggle ──
+const viewButtons = document.querySelectorAll<HTMLButtonElement>('[data-view]')
+viewButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const mode = btn.dataset['view']
+    if (!mode) return
+    viewButtons.forEach(b => b.setAttribute('aria-pressed', 'false'))
+    btn.setAttribute('aria-pressed', 'true')
+    document.body.classList.remove('view-visual', 'view-article')
+    document.body.classList.add(`view-${mode}`)
+    if (mode === 'visual') scheduleRender()
+  })
+})
