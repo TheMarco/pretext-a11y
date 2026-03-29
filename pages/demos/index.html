@@ -103,6 +103,18 @@
   .a11y-overview li:last-child { margin-bottom: 0; }
   .a11y-overview p:last-child, .a11y-overview ul:last-child { margin-bottom: 0; }
   .a11y-overview strong { color: var(--ink); font-weight: 600; }
+  .repo-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background: var(--accent);
+    color: white;
+    font: 600 14px/1 "SF Mono", ui-monospace, monospace;
+    text-decoration: none;
+    border-radius: 8px;
+    letter-spacing: 0.01em;
+    transition: background 120ms ease;
+  }
+  .repo-link:hover { background: #7d4e30; }
   .a11y-credit {
     margin-top: 16px;
     padding-top: 14px;
@@ -176,6 +188,18 @@
         <h2>Masonry</h2>
         <p>A text-card occlusion demo where height prediction comes from Pretext instead of DOM reads.</p>
       </a>
+    </section>
+
+    <section class="a11y-overview" aria-label="Get the code">
+      <h2>Get the code</h2>
+      <p>
+        This is an accessible fork of <a href="https://github.com/chenglou/pretext">Pretext</a>
+        with full accessibility enhancements, progressive enhancement for no-JS environments,
+        and search engine indexable content across every demo.
+      </p>
+      <p>
+        <a class="repo-link" href="https://github.com/TheMarco/pretext-a11y">github.com/TheMarco/pretext-a11y</a>
+      </p>
     </section>
 
     <section class="a11y-overview" aria-label="Accessibility overview">
