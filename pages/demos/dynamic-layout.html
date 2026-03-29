@@ -319,11 +319,12 @@
           users switch between the visual demo and the readable article.
         </p>
         <p>
-          The page also works without JavaScript. The visual stage is hidden by default and
-          only shown when JS enables visual mode. Without JS, the semantic article reading
-          view is visible immediately. A <code>&lt;noscript&gt;</code> fallback links to the
-          original source essay, ensuring text browsers, crawlers, and reader modes always
-          find meaningful content rather than a blank page.
+          The page also works without JavaScript. The full article excerpt is pre-populated
+          directly in the HTML source. The visual stage is hidden by default and only shown
+          when JS enables visual mode. Without JS, the article reading view is visible
+          immediately with all content intact. Text browsers like Lynx, search engine
+          crawlers, and browser reader modes see the complete article without executing
+          any script.
         </p>
       </section>
     </section>

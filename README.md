@@ -174,11 +174,11 @@ Every demo follows a **dual-layer pattern**:
 Pretext is a JavaScript library, so it would be easy to assume these demos are useless without JS. We made sure that's not the case. Every demo follows a progressive enhancement strategy where content is accessible even when JavaScript is unavailable:
 
 - **Content-first defaults.** Pages default to showing readable content. Visual stages are hidden until JavaScript adds the appropriate view class. Without JS, you get the article — not a blank page.
-- **Pre-populated HTML.** Where possible, content lives directly in the HTML source (accordion section titles and body text, chat messages in bubbles) rather than being injected by JavaScript. Crawlers, reader modes, and text browsers see real content immediately.
+- **Pre-populated HTML.** All meaningful content is embedded directly in the HTML source. The editorial engine and dynamic layout embed their full articles (30+ paragraphs). The accordion pre-populates all section titles and body text. The bubbles demo includes every chat message. The rich note embeds its formatted text in both an sr-only paragraph and a `<noscript>` block with semantic formatting. Crawlers, reader modes, and text browsers see real content immediately — no JavaScript execution required.
 - **Graceful degradation.** The accordion defaults to all sections expanded when JS can't run the collapse logic. Sliders and view toggles are inert without JS, but the content they control is already visible.
-- **`<noscript>` fallbacks.** Every demo that depends on JavaScript for rendering includes a `<noscript>` message explaining what the demo does and, where applicable, linking to original source material.
+- **`<noscript>` fallbacks.** Every demo includes a `<noscript>` element providing context or content appropriate to the demo type.
 
-This matters because accessibility extends beyond screen readers. Content should reach people regardless of how they access the web — whether that's a full browser, a text terminal like Lynx, a translation service, a browser reader mode, or a search engine indexing the page.
+This matters for both accessibility and discoverability. Text browsers like Lynx render the full content. Search engine crawlers index real text instead of empty markup. Browser reader modes extract the article. Translation services have text to work with. The original demos, by contrast, render all content via JavaScript into positioned fragments — without JS, crawlers and text browsers see essentially nothing.
 
 ### The principle
 
