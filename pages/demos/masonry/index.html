@@ -36,6 +36,15 @@
       overflow: hidden;
     }
 
+    .noscript-msg {
+      max-width: 640px; margin: 32px auto;
+      padding: 24px;
+      background: white; border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      font: 400 15px/1.6 "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #666;
+    }
+
     /* ── Accessibility note ── */
     .a11y-note {
       max-width: 640px; margin: 32px auto;
@@ -61,6 +70,13 @@
 <body>
   <h1 class="sr-only">Masonry Layout</h1>
   <main id="masonry-root" aria-label="Masonry grid of shower thoughts">
+    <noscript>
+      <div class="noscript-msg">
+        <p>This masonry grid demo requires JavaScript to load and position the cards.
+           It uses Pretext to compute exact card heights without DOM measurement,
+           enabling perfect positioning with zero layout reflow.</p>
+      </div>
+    </noscript>
     <!-- Visual cards created by JS, semantic list below -->
   </main>
 
